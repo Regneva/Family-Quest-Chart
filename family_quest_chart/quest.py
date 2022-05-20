@@ -23,6 +23,9 @@ class Quest:
         self.recurrence = recurrance
         self.points = points
 
+    def read_quest(self):
+        pass
+
 # uuid
 # short name
 # description

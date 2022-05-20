@@ -25,6 +25,12 @@ class Character:
         self.points = 0
         self.inventory = []
 
+    def assign_quest(self, quest):
+        pass
+
+    def read_character(self):
+        pass
+
 # username
 # first name
 # last name
