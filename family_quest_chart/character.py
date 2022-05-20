@@ -14,10 +14,10 @@ __license__ = "All rights reserved"
 
 class Character:
     """Character are the player."""
-    def __init__(self):
+    def __init__(self, username, first_name='', last_name='', email='', points='0', inventory=''):
         """Initialize the character class"""
         self.uuid = uuid4()
-        self.username = ''
+        self.username = 'username'
         self.first_name = ''
         self.last_name = ''
         self.email = ''
