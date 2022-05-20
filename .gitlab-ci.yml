@@ -1,0 +1,72 @@
+
+stages:
+  - Test
+#  - Build
+#  - Upload
+variables:
+  PIP_INDEX_URL: "https://aquapi.aquaveo.com/aquaveo/stable/+simple/"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/pip-cache"
+cache:
+  paths:
+    - "$CI_PROJECT_DIR/pip-cache"
+  key: "$CI_PROJECT_ID"
+### Python Package Build
+include:
+  - project: 'aquaveo/build-helpers/aquapi-unified-build-ci'
+    ref: 4.1.1
+    file: 'python-package-template.yml'
+"Lint Package":
+  extends: .python_package_windows_linting
+  image: GLR-py310
+  variables:
+    PYTHON_PACKAGE_DIR: '.'
+    APPLICATION_IMPORT_NAMES: 'HYTest,tests'
+"Test Package":
+  extends: .python_package_windows_coverage
+  image: GLR-py310
+  before_script:
+    - pip install -i https://aquapi.aquaveo.com/aquaveo/stable/+simple/ version-generator==0.6.0
+  variables:
+    PYTHON_PACKAGE_DIR: '.'
+    GIT_SUBMODULE_STRATEGY: recursive
+#documentation:
+#  stage: docs
+#  script:
+#    - mkdir pydocs
+#    - spinx-build -b html ./docs ./pydocs
+#  artifacts:
+#    paths:
+#      - pydocs
+#    expire_in: 1 week
+#"Build Package":
+#  extends: .python_package_windows_build
+#  image: GLR-py310
+#  before_script:
+#    - pip install -i https://aquapi.aquaveo.com/aquaveo/stable/+simple/ version-generator==0.6.0 "xmsapi<3.0.0"
+#    - rmdir /S /Q windows_exe
+#    - svn checkout "https://svn.aquaveo.com/xms/devproj/trunk/external_source/XMLCompile/XMLCompile/windows_exe" --username %SVN_XMSUSER% --password %SVN_XMSPASS%
+#    - cd windows_exe
+#    - cd ..
+#    - rmdir /S /Q windows_exe
+#  variables:
+#    PYTHON_PACKAGE_DIR: '.'
+#    DEVPI_USERNAME: 'aquaveo'
+#    DEVPI_UPLOAD_LOCATION: 'https://aquapi.aquaveo.com/aquaveo/dev'
+#"Upload Package Dev":
+#  extends: .python_package_windows_upload
+#  image: GLR-py310
+#  variables:
+#    DEVPI_USERNAME: 'aquaveo'
+#    DEVPI_UPLOAD_LOCATION: 'https://aquapi.aquaveo.com/aquaveo/dev'
+#  when: manual
+#  only:
+#    refs:
+#      - master
+#"Upload Package":
+#  extends: .python_package_windows_upload
+#  image: GLR-py310
+#  variables:
+#    DEVPI_USERNAME: 'aquaveo'
+#    DEVPI_UPLOAD_LOCATION: 'https://aquapi.aquaveo.com/aquaveo/stable'
+#  only:
+#    - tags
