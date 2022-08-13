@@ -24,9 +24,17 @@ class Character:
         # self.birthday = ''
         self.points = 0
         self.inventory = []
+        self.quests = []
+        self.completed_quests = [[]]
+        self.uncompleted_quests = []
 
-    def assign_quest(self, quest):
-        pass
+    def assign_quest(self, quest, new_day):
+        if new_day:
+            if len(self.quests):
+                self.uncompleted_quests = self.quests
+            self.quests = []
+        self.quests.append(quest)
+
 
     def read_character(self):
         pass
