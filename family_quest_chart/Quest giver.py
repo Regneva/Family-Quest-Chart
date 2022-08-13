@@ -20,6 +20,8 @@ class QuestGiver:
         self.quests = []
         self.directory = directory
 
+        self.roles = []
+
 
     def read_all_quests(self):
         pass
