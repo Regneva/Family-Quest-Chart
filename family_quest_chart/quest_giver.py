@@ -19,14 +19,7 @@ class QuestGiver:
         self.characters = []
         self.quests = []
         self.directory = directory
-        self.assigned_day = None
-        self.roles = []
-        self.rewards = None
-        self.tomorrow_has_breakfast = true
-        self.tomorrow_has_lunch = true
-        self.tomorrow_has_dinner = true
 
-        self.present_characters = []
 
     def read_all_quests(self):
         pass
@@ -34,24 +27,10 @@ class QuestGiver:
     def read_all_characters(self):
         pass
 
-    def save(self):
-        pass
-
-    def read(self):
-        pass
-
     def assign_all_quests(self):
         # Assign mentors by birthdate
         # Determine quests to assign based on priority
         # Assign the quests
-        pass
-
-    def gather_present_characters(self):
-        for character in self.characters:
-            if character.present:
-                self.present_characters.append(character)
-
-    def assign_fellowships(self):
         pass
 
     def compute_data(self):
