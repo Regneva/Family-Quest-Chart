@@ -14,13 +14,16 @@ __license__ = "All rights reserved"
 
 class Quest:
     """Quest is the chore."""
-    def __init__(self, short_name='', description='', priority='essential', recurrance='daily', points=2):
+    def __init__(self, name='', description='', check_off_instructions='', priority='essential', frequency='daily', points=2):
         """Initialize the quest class."""
         self.uuid = uuid4()
-        self.short_name = short_name
+        self.name = name
         self.description = description
+        self.check_off_instructions = check_off_instructions
+        self.age_limit = 0
+        self.last_completed = None
         self.priority = priority
-        self.recurrence = recurrance
+        self.frequency = frequency
         self.points = points
 
     def read_quest(self):
