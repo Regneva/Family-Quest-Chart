@@ -3,6 +3,7 @@
 from uuid import uuid4
 
 # 2. Third party modules
+import h5py
 
 # 3. Family modules
 
@@ -23,8 +24,16 @@ class Quest:
         self.recurrence = recurrance
         self.points = points
 
-    def read_quest(self):
+    def read_quest(self, h5file):
         pass
+
+    def write_quest(self, h5group):
+        dt = h5py.string_dtype(encoding='utf-8')
+        data = h5group.create_dataset(self.uuid, data=self.short_name, dtype=dt)
+        data.attrs['description'] = self.description
+        data.attrs['priority'] = self.priority
+        data.attrs['recurrence'] = self.recurrence
+        data.attrs['points'] = self.points
 
 # uuid
 # short name

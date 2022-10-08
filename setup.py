@@ -22,7 +22,7 @@ packaging = 'bdist_wheel' in sys.argv
 version = '99.99.99'
 
 requires = [
-    # 'h5py',
+    'h5py',
     # 'matplotlib',
     # 'numpy',
     # 'plotly',
