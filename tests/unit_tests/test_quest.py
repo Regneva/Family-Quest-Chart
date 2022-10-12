@@ -1,5 +1,6 @@
 """Tests the Quest class."""
 # 1. Standard python libraries
+import os
 import unittest
 
 # 2. Third party libraries
@@ -21,7 +22,8 @@ class TestQuest(unittest.TestCase):
 
     def test_writing_quest(self):
         new_chore = self.test_creating_quest()
-        file = 'test_writing_quest.hdf5'
+        basename = 'test_writing_quest.hdf5'
+        file = os.path.join('files', 'test_writing_quest', 'out', basename)
         with h5py.File(file, 'w') as quest_file:
             grp = quest_file.create_group("Quests")
             new_chore.write_quest(grp)

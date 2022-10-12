@@ -29,7 +29,7 @@ class Quest:
 
     def write_quest(self, h5group):
         dt = h5py.string_dtype(encoding='utf-8')
-        data = h5group.create_dataset(self.uuid, data=self.short_name, dtype=dt)
+        data = h5group.create_dataset(str(self.uuid), data=self.short_name, dtype=dt)
         data.attrs['description'] = self.description
         data.attrs['priority'] = self.priority
         data.attrs['recurrence'] = self.recurrence
