@@ -1,6 +1,7 @@
 """Class for Character"""
 # 1. Standard python libraries
 from uuid import uuid4
+import h5py
 
 # 2. Third party modules
 
@@ -38,6 +39,15 @@ class Character:
 
     def read_character(self):
         pass
+
+    def write_character(self, h5group):
+        dt = h5py.string_dtype(encoding='utf-8')
+        data = h5group.create_dataset(str(self.uuid), data=self.username, dtype=dt)
+        data.attrs['username'] = self.username
+        data.attrs['inventory'] = self.inventory
+        data.attrs['email'] = self.email
+        data.attrs['completed_quests'] = self.completed_quests
+        data.attrs['points'] = self.points
 
 # username
 # first name
