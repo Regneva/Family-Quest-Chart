@@ -3,10 +3,10 @@
 import unittest
 
 # 2. Third party libraries
-from family_quest_chart.quest import Quest
 import h5py
 
 # 3. Local libraries
+from family_quest_chart.quest import Quest
 
 __copyright__ = "(C) Copyright Eric J. Jones 2020"
 __license__ = "All rights reserved"

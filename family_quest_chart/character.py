@@ -14,19 +14,22 @@ __license__ = "All rights reserved"
 
 class Character:
     """Character are the player."""
-    def __init__(self, username, first_name='', last_name='', email='', points='0', inventory=''):
+    def __init__(self, username, birthday, first_name='', last_name='', email='', points='0', inventory=''):
         """Initialize the character class"""
         self.uuid = uuid4()
-        self.username = 'username'
-        self.first_name = ''
-        self.last_name = ''
-        self.email = ''
-        # self.birthday = ''
-        self.points = 0
-        self.inventory = []
+        self.username = username
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+        self.birthday = birthday
+        self.points = points
+        self.inventory = inventory
         self.quests = []
         self.completed_quests = [[]]
         self.uncompleted_quests = []
+        self.fellowship_dict = {}
+        self.quest_last_assigned = {}
+        
 
     def assign_quest(self, quest, new_day):
         if new_day:
