@@ -6,12 +6,12 @@ import os
 import pytest
 
 # 2. Third party libraries
+
+# 3. Local libraries
 from family_quest_chart.character import Character
 from family_quest_chart.quest import Quest
 from family_quest_chart.quest_giver import QuestGiver
 from family_quest_chart.quest_scribe import QuestScribe
-
-# 3. Local libraries
 
 __copyright__ = "(C) Copyright Eric J. Jones 2020"
 __license__ = "All rights reserved"

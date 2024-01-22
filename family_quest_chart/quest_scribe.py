@@ -44,7 +44,7 @@ class QuestScribe:
                   quests = fellowship.mentor_quest_schedule
                 for schedule in quests:
                   for quest in quests[schedule]:
-                    doc.add_paragraph(f'{schedule}: {quest.short_name}; {quest.description}')
+                    doc.add_paragraph(f'{schedule}: {quest.name}; {quest.description}')
                   
               if fellowship.mentee:
                 doc.add_heading(fellowship.mentee.first_name, level=3)
@@ -62,7 +62,7 @@ class QuestScribe:
               quest_count = 0
               quest_line = schedule + ': '
               for quest in remaining_quests[date][quest_index][schedule]:
-                quest_line += quest.short_name
+                quest_line += quest.name
                 quest_count += 1
               if quest_count > 0:
                 doc.add_paragraph(quest_line)
