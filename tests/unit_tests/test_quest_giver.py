@@ -98,6 +98,8 @@ class TestQuestGiver:
     quest_giver.quests.append(clear_counters)
     unload_dishwasher = Quest('Unload Dishwasher', 'Put away clean dishes near sink and in the dishwasher', 1, 3)
     quest_giver.quests.append(unload_dishwasher)
+    floors = Quest('Floors', 'Sweep and mop the kitchen floor', 1, 3)
+    quest_giver.quests.append(floors)
     # Pet Chores
     chickens = Quest('Chicken Tender', 'Take chicken bucket to chickens, ensure they have food & water, gather eggs', 1, 2)
     chickens.repeat = {day: ['morning'] for day in chickens.days}
@@ -109,22 +111,55 @@ class TestQuestGiver:
     trash = Quest('Trash', 'Empty loft and kitchen garbages; on Monday, take garbages to curb', 1, 1)
     quest_giver.quests.append(trash)
     cat_and_dog.repeat = {day: ['morning'] for day in cat_and_dog.days}
-    upstairs_bathroom = Quest('Upstairs Bathroom', 'Clean upstairs bathroom', 2, 3)
+    upstairs_bathroom = Quest('Clean Upstairs Bathroom', 'Follow list above light-switch', 2, 3)
     upstairs_bathroom.repeat = {day: ['morning'] for day in upstairs_bathroom.days}
     quest_giver.quests.append(upstairs_bathroom)
-    downstairs_bathroom = Quest('Downstairs Bathroom', 'Clean downstairs bathroom', 2, 3)
+    main_bathroom = Quest('Clean Main Bathroom', 'Follow list above light-switch', 2, 3)
+    main_bathroom.repeat = {day: ['morning'] for day in main_bathroom.days}
+    quest_giver.quests.append(main_bathroom)
+    downstairs_bathroom = Quest('Clean Downstairs Bathroom', 'Follow list above light-switch', 2, 3)
     downstairs_bathroom.repeat = {day: ['morning'] for day in downstairs_bathroom.days}
     quest_giver.quests.append(downstairs_bathroom)
-    vacum = Quest('Vacum', 'Vacum one room', 2, 3)
-    vacum.repeat = {day: ['evening'] for day in vacum.days}
-    quest_giver.quests.append(vacum)
+    vacuum = Quest('Vacuum', 'Vacuum one room', 2, 3)
+    vacuum.repeat = {day: ['evening'] for day in vacuum.days}
+    quest_giver.quests.append(vacuum)
+    loft = Quest('Dust & Tidy Loft', 'Dust, tidy your desk (no loose papers), maintain vacuum', 2, 3)
+    loft.repeat = {day: ['evening'] for day in loft.days}
+    quest_giver.quests.append(loft)
+    library = Quest('Dust & Tidy Library', 'Dust & tidy Library, sweep & vacuum Library and main hall', 2, 3)
+    library.repeat = {day: ['evening'] for day in library.days}
+    quest_giver.quests.append(library)
+    family_room = Quest('Dust & Tidy Family Room', 'Dust & tidy Family Room & main hall, sweep & vacuum Family Room', 2, 3)
+    family_room.repeat = {day: ['evening'] for day in family_room.days}
+    quest_giver.quests.append(family_room)
     outside = Quest('Outside', 'Take 10 minutes to work outside: Weeds, sweeping, snow-removal', 2, 3)
     outside.repeat = {day: ['evening'] for day in outside.days}
     quest_giver.quests.append(outside)
     outside2 = Quest('Outside', 'Take 10 minutes to work outside: Weeds, sweeping, snow-removal', 2, 3)
     outside2.repeat = {day: ['evening'] for day in outside2.days}
     quest_giver.quests.append(outside)
-
+    # Laundry
+    laundry = Quest('Laundry', 'Sort, wash, dry, fold, and put away clothes.', 1, 3, True)
+    laundry.mentor_assignment_by_day = {
+      'Monday': quest_giver.find_character_by_first_name('Abigail').uuid,
+      'Tuesday': quest_giver.find_character_by_first_name('Mckenna').uuid,
+      'Wednesday': quest_giver.find_character_by_first_name('Andrew').uuid,
+      'Thursday': quest_giver.find_character_by_first_name('Rachel').uuid,
+      'Friday': quest_giver.find_character_by_first_name('Aaron').uuid,
+      'Saturday': None,
+      'Sunday': quest_giver.find_character_by_first_name('Josh').uuid
+    }
+    laundry.mentee_assignment_by_day = {
+      'Monday': quest_giver.find_character_by_first_name('Annelise').uuid,
+      'Tuesday': quest_giver.find_character_by_first_name('Miriam').uuid,
+      'Wednesday': quest_giver.find_character_by_first_name('Jonathan').uuid,
+      'Thursday': quest_giver.find_character_by_first_name('Melody').uuid,
+      'Friday': quest_giver.find_character_by_first_name('Benjamin').uuid,
+      'Saturday': None,
+      'Sunday': None
+    }
+    quest_giver.quests.append(laundry)
+    
   def test_assign_quests_for_the_next_week(self):
       # Test case for a method of the class
     last_date = datetime.now().date() + timedelta(weeks=1)

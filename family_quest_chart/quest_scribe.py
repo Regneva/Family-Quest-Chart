@@ -32,37 +32,40 @@ class QuestScribe:
           doc.add_heading(date.strftime('%A, %B %d, %Y'), level=1)
 
           for fellowship in assigned_quests[date]:
-              doc.add_heading(f'Fellowship {fellowship_count}', level=2)
+              fellowship_name = f'Fellowship {fellowship_count}:'
+              if fellowship.mentor:
+                fellowship_name += f' {fellowship.mentor.first_name}'
+              if fellowship.mentor and fellowship.mentee:
+                fellowship_name += ','
+              if fellowship.mentee:
+                fellowship_name += f' {fellowship.mentee.first_name}'
+              doc.add_heading(fellowship_name, level=2)
               fellowship_count += 1
               
               if fellowship.mentor:
                 doc.add_heading(fellowship.mentor.first_name, level=3)
                 quests = {}
-                if fellowship.mentor_daily_quest:
-                  quests['Daily'] = fellowship.mentor_daily_quest
-                else:
-                  quests = fellowship.mentor_quest_schedule
+                quests = fellowship.mentor_quest_schedule
                 for schedule in quests:
                   for quest in quests[schedule]:
                     doc.add_paragraph(f'{schedule}: {quest.name}; {quest.description}')
                   
               if fellowship.mentee:
                 doc.add_heading(fellowship.mentee.first_name, level=3)
-                if fellowship.mentee_daily_quest:
-                  quests['Daily'] = fellowship.mentee_daily_quest
-                else:
-                  quests = fellowship.mentee_quest_schedule
+                quests = fellowship.mentee_quest_schedule
                 for schedule in quests:
                   for quest in quests[schedule]:
-                    doc.add_paragraph(f'{schedule}: {quest.description}')
+                    doc.add_paragraph(f'{schedule}: {quest.name}; {quest.description}')
                 
-          doc.add_heading('Remaining Quests', level=2)
+          doc.add_heading('Remaining Quests (for reward or discipline)', level=2)
           for quest_index in remaining_quests[date]:
             for schedule in remaining_quests[date][quest_index]:
               quest_count = 0
               quest_line = schedule + ': '
               for quest in remaining_quests[date][quest_index][schedule]:
                 quest_line += quest.name
+                if quest_count > 0:
+                  quest_line += ", "
                 quest_count += 1
               if quest_count > 0:
                 doc.add_paragraph(quest_line)

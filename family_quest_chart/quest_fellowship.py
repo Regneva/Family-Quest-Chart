@@ -14,12 +14,10 @@ __license__ = "All rights reserved"
 
 class QuestFellowshipAssignment:
     """Assignment of the Fellowship of the quest."""
-    def __init__(self, mentor, mentee, quest = None):
+    def __init__(self, mentor, mentee):
         """Initialize the character class"""
         self.mentor = mentor
         self.mentee = mentee
-        self.mentor_daily_quest = quest
-        self.mentee_daily_quest = quest
         
         self.mentor_quest_schedule = {}
         self.mentee_quest_schedule = {}

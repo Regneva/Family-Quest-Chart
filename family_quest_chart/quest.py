@@ -45,13 +45,13 @@ class Quest:
         self.last_assigned_to_character = None
         
     def get_mentor_and_mentee_for_day(self, day):
-        mentor = None
-        mentee = None
+        mentor_uuid = None
+        mentee_uuid = None
         if day in self.mentor_assignment_by_day:
-            mentor = self.mentor_assignment_by_day[day]
+            mentor_uuid = self.mentor_assignment_by_day[day]
         if day in self.mentee_assignment_by_day:
-            mentee = self.mentee_assignment_by_day[day]
-        return mentor, mentee
+            mentee_uuid = self.mentee_assignment_by_day[day]
+        return mentor_uuid, mentee_uuid
 
     def read_quest(self, h5group, uuid):
         # self.short_name = np.array(h5group.get(uuid))[0]

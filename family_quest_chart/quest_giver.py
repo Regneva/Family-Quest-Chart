@@ -30,7 +30,7 @@ class QuestGiver:
 
         self.quests_to_assign = []
         self.quests_prioritized = {}
-        
+
         # Final product
         self.fellowships_with_quests_by_date = {}
         self.remaing_quests = {}
@@ -92,25 +92,29 @@ class QuestGiver:
             character2 = None
         self.assign_fellowship(character, character2, date)
     
-    def assign_fellowship(self, character1, character2, date, quest=None):
-        new_fellowship = QuestFellowshipAssignment(character1, character2, quest)
+    def assign_fellowship(self, character1, character2, date, remove_from_1st_list=False):
+        new_fellowship = QuestFellowshipAssignment(character1, character2)
         if character1:
-            # if character1 in self.characters_to_assign:
-            #     self.characters_to_assign.remove(character1)
+            if remove_from_1st_list and character1 in self.characters_to_assign:
+                self.characters_to_assign.remove(character1)
             if character1 in self.characters_to_be_assigned:
                 self.characters_to_be_assigned.remove(character1)
         if character2:
-            # if character2 in self.characters_to_assign:
-            #     self.characters_to_assign.remove(character2)
+            if remove_from_1st_list and character2 in self.characters_to_assign:
+                self.characters_to_assign.remove(character2)
             if character2 in self.characters_to_be_assigned:
                 self.characters_to_be_assigned.remove(character2)
         if character1 and character2:
             self.find_character_by_uuid(character1.uuid).fellowship_dict[character2.uuid] = date
             self.find_character_by_uuid(character2.uuid).fellowship_dict[character1.uuid] = date
         self.assigned_fellowships.append(new_fellowship)
+        return self.assigned_fellowships[-1]
         
     def find_character_by_uuid(self, uuid):
         return next(char for char in self.characters if char.uuid == uuid)
+    
+    def find_character_by_first_name(self, name):
+        return next(char for char in self.characters if char.first_name == name)
         
     def prioritize_and_classify_quests(self, day):
         self.quests_prioritized = {}
@@ -129,13 +133,13 @@ class QuestGiver:
                 self.quests_prioritized[priority][schedule].append(quest)
 
 
-    def assign_quests_to_fellowships(self, date, priority):
-        priority_morning = self.assign_quests_by_schedule(priority, 'morning', date)
-        priority_evening = self.assign_quests_by_schedule(priority, 'evening', date)
-        priority_noon = self.assign_quests_by_schedule(priority, 'noon', date)
+    def assign_quests_to_fellowships(self, date, priority, first_time):
+        priority_morning = self.assign_quests_by_schedule(priority, 'morning', date, first_time)
+        priority_evening = self.assign_quests_by_schedule(priority, 'evening', date, first_time)
+        priority_noon = self.assign_quests_by_schedule(priority, 'noon', date, first_time)
         return min(priority_morning, priority_evening, priority_noon)
             
-    def assign_quests_by_schedule(self, priority, schedule, date):
+    def assign_quests_by_schedule(self, priority, schedule, date, first_time):
         if schedule not in self.quests_prioritized[priority]:
             return 3
         while len(self.quests_prioritized[priority][schedule]) <= 0:
@@ -146,39 +150,46 @@ class QuestGiver:
                 return priority
             if schedule not in self.quests_prioritized[priority]:
                 return priority
-            quests_applicable = self.quests_prioritized[priority][schedule]
-            quest = self.find_quest_for_character(quests_applicable, fellowship.mentor)
-            if quest:
-                if schedule not in fellowship.mentor_quest_schedule:
-                    fellowship.mentor_quest_schedule[schedule] = []
-                fellowship.mentor_quest_schedule[schedule].append(quest)
-                fellowship.mentor.quest_last_assigned[quest.uuid] = date                
-                self.quests_prioritized[priority][schedule].remove(quest)
-                if len(self.quests_prioritized[priority][schedule]) == 0:
-                    priority += 1
-                    if priority not in self.quests_prioritized:
-                        return priority
-                    if schedule not in self.quests_prioritized[priority]:
-                        return priority
-                    quests_applicable = self.quests_prioritized[priority][schedule]
+            if first_time and 'daily' in fellowship.mentor_quest_schedule:
+                pass
+            else:
+                quests_applicable = self.quests_prioritized[priority][schedule]
+                quest = self.find_quest_for_character(quests_applicable, fellowship.mentor)
+                if quest:
+                    if schedule not in fellowship.mentor_quest_schedule:
+                        fellowship.mentor_quest_schedule[schedule] = []
+                    fellowship.mentor_quest_schedule[schedule].append(quest)
+                    fellowship.mentor.quest_last_assigned[quest.uuid] = date                
+                    self.quests_prioritized[priority][schedule].remove(quest)
+                    if len(self.quests_prioritized[priority][schedule]) == 0:
+                        priority += 1
+                        if priority not in self.quests_prioritized:
+                            return priority
+                        if schedule not in self.quests_prioritized[priority]:
+                            return priority
+                        quests_applicable = self.quests_prioritized[priority][schedule]
                 
             while len(self.quests_prioritized[priority]) <= 0:
                 priority += 1
-            
-            quest = self.find_quest_for_character(quests_applicable, fellowship.mentee)
-            if quest:
-                if schedule not in fellowship.mentee_quest_schedule:
-                    fellowship.mentee_quest_schedule[schedule] = []
-                fellowship.mentee_quest_schedule[schedule].append(quest)
-                fellowship.mentee.quest_last_assigned[quest.uuid] = date                
-                self.quests_prioritized[priority][schedule].remove(quest)
-                if len(self.quests_prioritized[priority][schedule]) == 0:
-                    priority += 1
+                
+            if first_time and 'daily' in fellowship.mentee_quest_schedule:
+                pass
+            else:
+                quests_applicable = self.quests_prioritized[priority][schedule]
+                quest = self.find_quest_for_character(quests_applicable, fellowship.mentee)
+                if quest:
+                    if schedule not in fellowship.mentee_quest_schedule:
+                        fellowship.mentee_quest_schedule[schedule] = []
+                    fellowship.mentee_quest_schedule[schedule].append(quest)
+                    fellowship.mentee.quest_last_assigned[quest.uuid] = date                
+                    self.quests_prioritized[priority][schedule].remove(quest)
+                    if len(self.quests_prioritized[priority][schedule]) == 0:
+                        priority += 1
             
         return priority
             
     def find_quest_for_character(self, quests_applicable, character):
-        if len(quests_applicable) <= 0:
+        if len(quests_applicable) <= 0 or character is None:
             return None
         quest_last_assigned = character.quest_last_assigned
         for quest in quests_applicable:
@@ -189,6 +200,27 @@ class QuestGiver:
         sorted_quests = sorted(quests_applicable, key=lambda quest: 
             datetime.strptime(str(quest.last_assigned_to_character), "%Y-%m-%d"))
         return sorted_quests[0]
+    
+    def assign_daily_quests(self, date, day):
+        daily_quests = [quest for quest in self.quests if quest.assign_by_day]
+        for daily_quest in daily_quests:
+            mentor_uuid, mentee_uuid = daily_quest.get_mentor_and_mentee_for_day(day)
+            if mentor_uuid or mentee_uuid:
+                mentor = None
+                mentee = None
+                if mentor_uuid:
+                    mentor = self.find_character_by_uuid(mentor_uuid)
+                if mentee_uuid:
+                    mentee = self.find_character_by_uuid(mentee_uuid)
+                fellowship = self.assign_fellowship(mentor, mentee, date, True)
+                if mentor_uuid:
+                    if 'daily' not in fellowship.mentor_quest_schedule:
+                        fellowship.mentor_quest_schedule['daily'] = []
+                    fellowship.mentor_quest_schedule['daily'].append(daily_quest)
+                if mentee_uuid:
+                    if 'daily' not in fellowship.mentee_quest_schedule:
+                        fellowship.mentee_quest_schedule['daily'] = []
+                    fellowship.mentee_quest_schedule['daily'].append(daily_quest)
 
     def assign_all_quests_for_day(self, date):
         day = date.strftime('%A')
@@ -196,11 +228,7 @@ class QuestGiver:
         self.assigned_fellowships = []
         
         # First gather and assign the quests that are assigned daily
-        daily_quests = [quest for quest in self.quests if quest.assign_by_day]
-        for daily_quest in daily_quests:
-            mentor, mentee = daily_quest.get_mentor_and_mentee_for_day(day)
-            if mentor or mentee:
-                self.assign_fellowship(mentor, mentee, date, daily_quest)
+        self.assign_daily_quests(date, day)
                 
         # Assign mentors by birthdate
         self.assign_all_fellowships(date)
@@ -210,9 +238,11 @@ class QuestGiver:
         self.prioritize_and_classify_quests(day)
         
         # Assign the quests
+        first_time = True
         priority = 1
         while priority <= 1:
-            priority = self.assign_quests_to_fellowships(date, priority)
+            priority = self.assign_quests_to_fellowships(date, priority, first_time)
+            first_time = False
     
     def assign_all_quests(self, last_date):
         current_date = datetime.now().date()
