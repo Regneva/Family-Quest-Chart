@@ -31,6 +31,8 @@ class Character:
         self.fellowship_dict = {}
         self.quest_last_assigned = {}
         
+        self.personal_quests = 'Prayer, Teeth, Bed, Neat & Clean, Music, Shower, Scripture, Physical, Teeth'
+        
 
     def assign_quest(self, quest, new_day):
         if new_day:

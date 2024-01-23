@@ -32,18 +32,22 @@ class QuestScribe:
           doc.add_heading(date.strftime('%A, %B %d, %Y'), level=1)
 
           for fellowship in assigned_quests[date]:
-              fellowship_name = f'Fellowship {fellowship_count}:'
+              if fellowship_count > 1:
+                doc.add_paragraph('')
+              fellowship_name = f'Fellowship {fellowship_count};'
               if fellowship.mentor:
-                fellowship_name += f' {fellowship.mentor.first_name}'
+                fellowship_name += f' {fellowship.mentor.first_name[0]}'
               if fellowship.mentor and fellowship.mentee:
-                fellowship_name += ','
+                fellowship_name += ' &'
               if fellowship.mentee:
-                fellowship_name += f' {fellowship.mentee.first_name}'
+                fellowship_name += f' {fellowship.mentee.first_name[0]}'
+              fellowship_name += ': Quests Complete ______________________'
               doc.add_heading(fellowship_name, level=2)
               fellowship_count += 1
               
               if fellowship.mentor:
-                doc.add_heading(fellowship.mentor.first_name, level=3)
+                mentor_name = f'{fellowship.mentor.first_name}: {fellowship.mentor.personal_quests}'
+                doc.add_heading(mentor_name, level=3)
                 quests = {}
                 quests = fellowship.mentor_quest_schedule
                 for schedule in quests:
@@ -51,7 +55,8 @@ class QuestScribe:
                     doc.add_paragraph(f'{schedule}: {quest.name}; {quest.description}')
                   
               if fellowship.mentee:
-                doc.add_heading(fellowship.mentee.first_name, level=3)
+                mentee_name = f'{fellowship.mentee.first_name}: {fellowship.mentee.personal_quests}'
+                doc.add_heading(mentee_name, level=3)
                 quests = fellowship.mentee_quest_schedule
                 for schedule in quests:
                   for quest in quests[schedule]:
