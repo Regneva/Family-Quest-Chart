@@ -108,7 +108,7 @@ class TestQuestGiver:
     cat_and_dog.repeat = {day: ['morning'] for day in cat_and_dog.days}
     quest_giver.quests.append(cat_and_dog)
     # Cleaning Chores
-    trash = Quest('Trash', 'Empty loft and kitchen garbages; on Monday, take garbages to curb', 1, 1)
+    trash = Quest('Trash', "Empty loft and kitchen garbages; Monday: take to curb (& Hamilton's) and return", 1, 1)
     quest_giver.quests.append(trash)
     cat_and_dog.repeat = {day: ['morning'] for day in cat_and_dog.days}
     upstairs_bathroom = Quest('Clean Upstairs Bathroom', 'Follow list above light-switch', 2, 3)
