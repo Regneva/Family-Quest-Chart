@@ -4,6 +4,7 @@ from uuid import uuid4
 import h5py
 
 # 2. Third party modules
+from docx.shared import RGBColor
 
 # 3. Family modules
 
@@ -32,6 +33,8 @@ class Character:
         self.quest_last_assigned = {}
         
         self.personal_quests = 'Prayer, Teeth, Bed, Neat & Clean, Music, Shower, Scripture, Physical, Teeth'
+        self.highlight_color = None
+        self.font_color = RGBColor(0, 0, 0)
         
 
     def assign_quest(self, quest, new_day):

@@ -16,11 +16,11 @@ __license__ = "All rights reserved"
 
 class Quest:
     """Quest is the chore."""
-    # def __init__(self, short_name='', description='', priority='essential', recurrance='daily', 
+    # def __init__(self, short_name='', description='', priority='essential', recurrance='Daily', 
     #              points=2, assign_by_day=False):
     def __init__(self, name='', description='', priority=1, 
                  points=2, assign_by_day=False):
-    # def __init__(self, name='', description='', check_off_instructions='', priority='essential', frequency='daily', points=2):
+    # def __init__(self, name='', description='', check_off_instructions='', priority='essential', frequency='Daily', points=2):
         """Initialize the quest class."""
         self.uuid = uuid4()
         self.name = name
@@ -28,9 +28,9 @@ class Quest:
         self.priority = priority  # 1 (must assign), 2 (assign), 3 (may assign)
         # The days this task occurs
         self.days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']  
-        self.repeat = {day: ['morning', 'evening'] for day in self.days}
-        self.repeat['Saturday'].append('noon')
-        self.repeat['Sunday'].append('noon')
+        self.repeat = {day: ['Morning', 'Evening'] for day in self.days}
+        self.repeat['Saturday'].append('Noon')
+        self.repeat['Sunday'].append('Noon')
         # self.check_off_instructions = check_off_instructions
         # self.age_limit = 0
         # self.last_completed = None

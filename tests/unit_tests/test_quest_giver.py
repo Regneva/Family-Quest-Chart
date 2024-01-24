@@ -6,6 +6,8 @@ import os
 import pytest
 
 # 2. Third party libraries
+from docx.enum.text import WD_COLOR
+from docx.shared import RGBColor
 
 # 3. Local libraries
 from family_quest_chart.character import Character
@@ -37,53 +39,71 @@ class TestQuestGiver:
     
     birthday = datetime.strptime('3/2/04', '%m/%d/%y')
     josh = Character('Josh', datetime.date(birthday), 'Josh', 'Miles', '')
+    josh.highlight_color = WD_COLOR.BRIGHT_GREEN
     quest_giver.characters.append(josh)
       
     if miles_kids:
       birthday = datetime.strptime('5/6/06', '%m/%d/%y')
       kenna = Character('Kenna', datetime.date(birthday), 'Mckenna', 'Miles', '')
+      kenna.highlight_color = WD_COLOR.TEAL
+      kenna.font_color = RGBColor(255, 255, 255)
       quest_giver.characters.append(kenna)
       
     birthday = datetime.strptime('7/6/07', '%m/%d/%y')
     andrew = Character('Andy', datetime.date(birthday), 'Andrew', 'Miles', '')
+    andrew.highlight_color = WD_COLOR.DARK_RED
+    andrew.font_color = RGBColor(255, 255, 255)
     quest_giver.characters.append(andrew)
       
     if jones_kids:
       birthday = datetime.strptime('3/23/08', '%m/%d/%y')
       miriam = Character('Miriam', datetime.date(birthday), 'Miriam', 'Jones', '')
+      miriam.highlight_color = WD_COLOR.RED
+      miriam.font_color = RGBColor(255, 255, 255)
       quest_giver.characters.append(miriam)
       
     if miles_kids:
       birthday = datetime.strptime('4/28/09', '%m/%d/%y')
       jon = Character('Jon', datetime.date(birthday), 'Jonathan', 'Miles', '')
+      jon.highlight_color = WD_COLOR.DARK_YELLOW
+      jon.font_color = RGBColor(255, 255, 255)
       quest_giver.characters.append(jon)
       
     if jones_kids:
       birthday = datetime.strptime('8/11/09', '%m/%d/%y')
       aaron = Character('Aaron', datetime.date(birthday), 'Aaron', 'Jones', '')
+      aaron.highlight_color = WD_COLOR.GREEN
+      aaron.font_color = RGBColor(255, 255, 255)
       quest_giver.characters.append(aaron)
       
       birthday = datetime.strptime('6/22/11', '%m/%d/%y')
       rachel = Character('Rachel', datetime.date(birthday), 'Rachel', 'Jones', '')
+      rachel.highlight_color = WD_COLOR.VIOLET
+      rachel.font_color = RGBColor(255, 255, 255)
       quest_giver.characters.append(rachel)
     
     if miles_kids:
       birthday = datetime.strptime('3/17/12', '%m/%d/%y')
       abigail = Character('Abby', datetime.date(birthday), 'Abigail', 'Miles', '')
+      abigail.highlight_color = WD_COLOR.TURQUOISE
       quest_giver.characters.append(abigail)
     
     if jones_kids:
       birthday = datetime.strptime('11/22/12', '%m/%d/%y')
       ben = Character('Benj', datetime.date(birthday), 'Benjamin', 'Jones', '')
+      ben.highlight_color = WD_COLOR.BLUE
+      ben.font_color = RGBColor(255, 255, 255)
       quest_giver.characters.append(ben)
       
       birthday = datetime.strptime('5/10/14', '%m/%d/%y')
       melody = Character('Melody', datetime.date(birthday), 'Melody', 'Jones', '')
+      melody.highlight_color = WD_COLOR.PINK
       quest_giver.characters.append(melody)
 
     if miles_kids:
       birthday = datetime.strptime('2/5/16', '%m/%d/%y')
       ann = Character('Ann', datetime.date(birthday), 'Annelise', 'Miles', '')
+      ann.highlight_color = WD_COLOR.YELLOW
       quest_giver.characters.append(ann)
       
     birthday = datetime.strptime('2/18/21', '%m/%d/%y')
@@ -102,41 +122,41 @@ class TestQuestGiver:
     quest_giver.quests.append(floors)
     # Pet Chores
     chickens = Quest('Chicken Tender', 'Take chicken bucket to chickens, ensure they have food & water, gather eggs', 1, 2)
-    chickens.repeat = {day: ['morning'] for day in chickens.days}
+    chickens.repeat = {day: ['Morning'] for day in chickens.days}
     quest_giver.quests.append(chickens)
     cat_and_dog = Quest('Cat & Dog', 'Ensure they have food & water (dog at meals), take Dexter out 1st thing and at 8:20 pm', 1, 2)
-    cat_and_dog.repeat = {day: ['morning'] for day in cat_and_dog.days}
+    cat_and_dog.repeat = {day: ['Morning'] for day in cat_and_dog.days}
     quest_giver.quests.append(cat_and_dog)
     # Cleaning Chores
     trash = Quest('Trash', "Empty loft and kitchen garbages; Monday: take to curb (& Hamilton's) and return", 1, 1)
     quest_giver.quests.append(trash)
-    cat_and_dog.repeat = {day: ['morning'] for day in cat_and_dog.days}
+    cat_and_dog.repeat = {day: ['Morning'] for day in cat_and_dog.days}
     upstairs_bathroom = Quest('Clean Upstairs Bathroom', 'Follow list above light-switch', 2, 3)
-    upstairs_bathroom.repeat = {day: ['morning'] for day in upstairs_bathroom.days}
+    upstairs_bathroom.repeat = {day: ['Morning'] for day in upstairs_bathroom.days}
     quest_giver.quests.append(upstairs_bathroom)
     main_bathroom = Quest('Clean Main Bathroom', 'Follow list above light-switch', 2, 3)
-    main_bathroom.repeat = {day: ['morning'] for day in main_bathroom.days}
+    main_bathroom.repeat = {day: ['Morning'] for day in main_bathroom.days}
     quest_giver.quests.append(main_bathroom)
     downstairs_bathroom = Quest('Clean Downstairs Bathroom', 'Follow list above light-switch', 2, 3)
-    downstairs_bathroom.repeat = {day: ['morning'] for day in downstairs_bathroom.days}
+    downstairs_bathroom.repeat = {day: ['Morning'] for day in downstairs_bathroom.days}
     quest_giver.quests.append(downstairs_bathroom)
     vacuum = Quest('Vacuum', 'Vacuum one room', 2, 3)
-    vacuum.repeat = {day: ['evening'] for day in vacuum.days}
+    vacuum.repeat = {day: ['Evening'] for day in vacuum.days}
     quest_giver.quests.append(vacuum)
     loft = Quest('Dust & Tidy Loft', 'Dust, tidy your desk (no loose papers), maintain vacuum', 2, 3)
-    loft.repeat = {day: ['evening'] for day in loft.days}
+    loft.repeat = {day: ['Evening'] for day in loft.days}
     quest_giver.quests.append(loft)
     library = Quest('Dust & Tidy Library', 'Dust & tidy Library, sweep & vacuum Library and main hall', 2, 3)
-    library.repeat = {day: ['evening'] for day in library.days}
+    library.repeat = {day: ['Evening'] for day in library.days}
     quest_giver.quests.append(library)
     family_room = Quest('Dust & Tidy Family Room', 'Dust & tidy Family Room & main hall, sweep & vacuum Family Room', 2, 3)
-    family_room.repeat = {day: ['evening'] for day in family_room.days}
+    family_room.repeat = {day: ['Evening'] for day in family_room.days}
     quest_giver.quests.append(family_room)
     outside = Quest('Outside', 'Take 10 minutes to work outside: Weeds, sweeping, snow-removal', 2, 3)
-    outside.repeat = {day: ['evening'] for day in outside.days}
+    outside.repeat = {day: ['Evening'] for day in outside.days}
     quest_giver.quests.append(outside)
     outside2 = Quest('Outside', 'Take 10 minutes to work outside: Weeds, sweeping, snow-removal', 2, 3)
-    outside2.repeat = {day: ['evening'] for day in outside2.days}
+    outside2.repeat = {day: ['Evening'] for day in outside2.days}
     quest_giver.quests.append(outside)
     # Laundry
     laundry = Quest('Laundry', 'Sort, wash, dry, fold, and put away clothes.', 1, 3, True)

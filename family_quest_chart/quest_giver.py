@@ -134,9 +134,9 @@ class QuestGiver:
 
 
     def assign_quests_to_fellowships(self, date, priority, first_time):
-        priority_morning = self.assign_quests_by_schedule(priority, 'morning', date, first_time)
-        priority_evening = self.assign_quests_by_schedule(priority, 'evening', date, first_time)
-        priority_noon = self.assign_quests_by_schedule(priority, 'noon', date, first_time)
+        priority_morning = self.assign_quests_by_schedule(priority, 'Morning', date, first_time)
+        priority_evening = self.assign_quests_by_schedule(priority, 'Evening', date, first_time)
+        priority_noon = self.assign_quests_by_schedule(priority, 'Noon', date, first_time)
         return min(priority_morning, priority_evening, priority_noon)
             
     def assign_quests_by_schedule(self, priority, schedule, date, first_time):
@@ -150,7 +150,7 @@ class QuestGiver:
                 return priority
             if schedule not in self.quests_prioritized[priority]:
                 return priority
-            if first_time and 'daily' in fellowship.mentor_quest_schedule:
+            if first_time and 'Daily' in fellowship.mentor_quest_schedule:
                 pass
             else:
                 quests_applicable = self.quests_prioritized[priority][schedule]
@@ -172,7 +172,7 @@ class QuestGiver:
             while len(self.quests_prioritized[priority]) <= 0:
                 priority += 1
                 
-            if first_time and 'daily' in fellowship.mentee_quest_schedule:
+            if first_time and 'Daily' in fellowship.mentee_quest_schedule:
                 pass
             else:
                 quests_applicable = self.quests_prioritized[priority][schedule]
@@ -214,20 +214,20 @@ class QuestGiver:
                     mentee = self.find_character_by_uuid(mentee_uuid)
                 fellowship = self.assign_fellowship(mentor, mentee, date, True)
                 if mentor_uuid:
-                    if 'daily' not in fellowship.mentor_quest_schedule:
-                        fellowship.mentor_quest_schedule['daily'] = []
-                    fellowship.mentor_quest_schedule['daily'].append(daily_quest)
+                    if 'Daily' not in fellowship.mentor_quest_schedule:
+                        fellowship.mentor_quest_schedule['Daily'] = []
+                    fellowship.mentor_quest_schedule['Daily'].append(daily_quest)
                 if mentee_uuid:
-                    if 'daily' not in fellowship.mentee_quest_schedule:
-                        fellowship.mentee_quest_schedule['daily'] = []
-                    fellowship.mentee_quest_schedule['daily'].append(daily_quest)
+                    if 'Daily' not in fellowship.mentee_quest_schedule:
+                        fellowship.mentee_quest_schedule['Daily'] = []
+                    fellowship.mentee_quest_schedule['Daily'].append(daily_quest)
 
     def assign_all_quests_for_day(self, date):
         day = date.strftime('%A')
         self.characters_to_assign = self.sort_people_by_birthday(self.characters)
         self.assigned_fellowships = []
         
-        # First gather and assign the quests that are assigned daily
+        # First gather and assign the quests that are assigned Daily
         self.assign_daily_quests(date, day)
                 
         # Assign mentors by birthdate
