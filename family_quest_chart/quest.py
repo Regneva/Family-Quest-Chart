@@ -5,6 +5,7 @@ from uuid import uuid4
 # 2. Third party modules
 import h5py
 import numpy as np
+from docx.shared import RGBColor
 
 # 3. Family modules
 
@@ -19,7 +20,7 @@ class Quest:
     # def __init__(self, short_name='', description='', priority='essential', recurrance='Daily', 
     #              points=2, assign_by_day=False):
     def __init__(self, name='', description='', priority=1, 
-                 points=2, assign_by_day=False):
+                 points=2, font_color=RGBColor(0, 0, 0), assign_by_day=False):
     # def __init__(self, name='', description='', check_off_instructions='', priority='essential', frequency='Daily', points=2):
         """Initialize the quest class."""
         self.uuid = uuid4()
@@ -37,6 +38,8 @@ class Quest:
         # self.priority = priority
         # self.frequency = frequency
         self.points = points
+        
+        self.font_color = font_color
         
         self.assign_by_day = assign_by_day  # characters are assigned to this task by certain days
         self.mentor_assignment_by_day = {}

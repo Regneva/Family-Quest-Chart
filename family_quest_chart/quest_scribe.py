@@ -67,12 +67,13 @@ class QuestScribe:
                 quests = fellowship.mentor_quest_schedule
                 for schedule in quests:
                   for quest in quests[schedule]:
+                    font_color = quest.font_color
                     para = doc.add_paragraph()
                     run1 = para.add_run()
                     run1.add_picture(chk_file, width=Inches(0.15), height=Inches(0.17))
                     run2 = para.add_run()
                     run2.add_picture(chk_file, width=Inches(0.15), height=Inches(0.17))
-                    para.add_run(f' {schedule}: {quest.name}; {quest.description}')
+                    para.add_run(f' {schedule}: {quest.name}; {quest.description}').font.color.rgb = font_color
                   
               if fellowship.mentee:
                 first_name = fellowship.mentee.first_name
@@ -82,12 +83,13 @@ class QuestScribe:
                 quests = fellowship.mentee_quest_schedule
                 for schedule in quests:
                   for quest in quests[schedule]:
+                    font_color = quest.font_color
                     para = doc.add_paragraph()
                     run1 = para.add_run()
                     run1.add_picture(chk_file, width=Inches(0.15), height=Inches(0.17))
                     run2 = para.add_run()
                     run2.add_picture(chk_file, width=Inches(0.15), height=Inches(0.17))
-                    para.add_run(f' {schedule}: {quest.name}; {quest.description}')
+                    para.add_run(f' {schedule}: {quest.name}; {quest.description}').font.color.rgb = font_color
                 
           doc.add_paragraph('')
           doc.add_heading('Remaining Quests (for reward or discipline)', level=2)

@@ -135,8 +135,8 @@ class QuestGiver:
 
     def assign_quests_to_fellowships(self, date, priority, first_time):
         priority_morning = self.assign_quests_by_schedule(priority, 'Morning', date, first_time)
-        priority_evening = self.assign_quests_by_schedule(priority, 'Evening', date, first_time)
         priority_noon = self.assign_quests_by_schedule(priority, 'Noon', date, first_time)
+        priority_evening = self.assign_quests_by_schedule(priority, 'Evening', date, first_time)
         return min(priority_morning, priority_evening, priority_noon)
             
     def assign_quests_by_schedule(self, priority, schedule, date, first_time):
@@ -202,7 +202,7 @@ class QuestGiver:
         return sorted_quests[0]
     
     def assign_daily_quests(self, date, day):
-        daily_quests = [quest for quest in self.quests if quest.assign_by_day]
+        daily_quests = [quest for quest in self.quests if quest.assign_by_day and day in quest.days]
         for daily_quest in daily_quests:
             mentor_uuid, mentee_uuid = daily_quest.get_mentor_and_mentee_for_day(day)
             if mentor_uuid or mentee_uuid:
@@ -234,7 +234,7 @@ class QuestGiver:
         self.assign_all_fellowships(date)
         
         # Determine quests to assign based on priority
-        self.quests_to_assign = [quest for quest in self.quests if day in quest.days]
+        self.quests_to_assign = [quest for quest in self.quests if not quest.assign_by_day and day in quest.days]
         self.prioritize_and_classify_quests(day)
         
         # Assign the quests
@@ -244,8 +244,8 @@ class QuestGiver:
             priority = self.assign_quests_to_fellowships(date, priority, first_time)
             first_time = False
     
-    def assign_all_quests(self, last_date):
-        current_date = datetime.now().date()
+    def assign_all_quests(self, start_date, last_date):
+        current_date = copy.deepcopy(start_date)
         while current_date <= last_date:
             self.assign_all_quests_for_day(current_date)
             self.fellowships_with_quests_by_date[current_date] = self.assigned_fellowships
