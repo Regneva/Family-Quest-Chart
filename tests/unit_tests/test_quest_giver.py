@@ -86,6 +86,7 @@ class TestQuestGiver:
       birthday = datetime.strptime('3/17/12', '%m/%d/%y')
       abigail = Character('Abby', datetime.date(birthday), 'Abigail', 'Miles', '')
       abigail.highlight_color = WD_COLOR.TURQUOISE
+      abigail.font_color = RGBColor(255, 255, 255)
       quest_giver.characters.append(abigail)
     
     if jones_kids:
